@@ -1,0 +1,1 @@
+<h2 style="color: #5e9ca0; text-align: center;"><span style="color: #000000;">~ COOMING SOON ~</span></h2>
