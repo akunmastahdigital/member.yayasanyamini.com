@@ -20,6 +20,10 @@ berkas/berkas_permohonan/*
 berkas/berkas_foto/*
 system/sessions/*
 
+config/database.php
+config/config.php
+.htaccess
+
 # IDE Files
 #-------------------------
 /nbproject/

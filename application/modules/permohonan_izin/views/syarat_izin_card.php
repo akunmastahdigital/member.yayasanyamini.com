@@ -946,12 +946,12 @@ foreach($m_grup as $mgp) {
                           <td class="jenis-infaq">
                             <select id="infaq" name="jenis_infaq_multi[]" class="form-control" disabled>
                                 <option value=""></option>
-                                <option <?php ("Sedekah Quran" == $data_multi_ziswaf[$i]['jenis_infaq'] ) ? "selected" : "" ?> value="Sedekah Quran">Sedekah Quran</option>
-                                <option <?php ("Bingkisan untuk guru ngaji" == $data_multi_ziswaf[$i]['jenis_infaq'] ) ? "selected" : "" ?> value="Bingkisan untuk guru ngaji">Bingkisan untuk guru ngaji</option>
-                                <option <?php ("Sedekah Quran" == $data_multi_ziswaf[$i]['jenis_infaq'] ) ? "selected" : "" ?> value="Beasiswa Pendidikan Quran Yatim Piatu">Beasiswa Pendidikan Quran Yatim Piatu</option>
-                                <option <?php ("Beasiswa Pendidikan Quran Yatim Piatu" == $data_multi_ziswaf[$i]['jenis_infaq'] ) ? "selected" : "" ?> value="Training guru Quran">Training guru Quran</option>
-                                <option <?php ("BBQ" == $data_multi_ziswaf[$i]['jenis_infaq'] ) ? "selected" : "" ?> value="BBQ">BBQ</option>
-                                <option <?php ("Pengembangan Dakwah Qur'an" == $data_multi_ziswaf[$i]['jenis_infaq'] ) ? "selected" : "" ?> value="Pengembangan Dakwah Qur'an">Pengembangan Dakwah Qur'an</option>
+                                <option <?php echo ("Sedekah Quran" == $data_multi_ziswaf[$i]['jenis_infaq'] ) ? "selected" : "" ?> value="Sedekah Quran">Sedekah Quran</option>
+                                <option <?php echo ("Bingkisan untuk guru ngaji" == $data_multi_ziswaf[$i]['jenis_infaq'] ) ? "selected" : "" ?> value="Bingkisan untuk guru ngaji">Bingkisan untuk guru ngaji</option>
+                                <option <?php echo ("Sedekah Quran" == $data_multi_ziswaf[$i]['jenis_infaq'] ) ? "selected" : "" ?> value="Beasiswa Pendidikan Quran Yatim Piatu">Beasiswa Pendidikan Quran Yatim Piatu</option>
+                                <option <?php echo ("Beasiswa Pendidikan Quran Yatim Piatu" == $data_multi_ziswaf[$i]['jenis_infaq'] ) ? "selected" : "" ?> value="Training guru Quran">Training guru Quran</option>
+                                <option <?php echo ("BBQ" == $data_multi_ziswaf[$i]['jenis_infaq'] ) ? "selected" : "" ?> value="BBQ">BBQ</option>
+                                <option <?php echo ("Pengembangan Dakwah Qur'an" == $data_multi_ziswaf[$i]['jenis_infaq'] ) ? "selected" : "" ?> value="Pengembangan Dakwah Qur'an">Pengembangan Dakwah Qur'an</option>
                             </select>
                           </td>
                           <td class="jumlah_uang">
