@@ -143,7 +143,7 @@ class User extends MY_Controller {
 			$this->upload->initialize($config);
 
 			if($this->upload->do_upload("foto")) {
-				$dS['img']		= base_url().substr($path, 1).$this->upload->data('file_name');
+				$dS['img']		= base_url().substr($path, 1).'/'.$this->upload->data('file_name');
 				$ins_dS = $this->M_core->update_tbl("m_user", $dS, $condition);
 			}
 

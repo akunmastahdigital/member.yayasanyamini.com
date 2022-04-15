@@ -37,13 +37,19 @@
             <td style="width:4%"></td>
             <td style="width:25%"><b>Donasi </b></td>
             <td style="width:3%">:</td>
-            <td style="width:65%">
-                <?php 
-                    foreach($multiple_ziswaf as $mz) {
+            <td style="width:65%"><?php 
+            $numItems = count($multiple_ziswaf);
+            $i = 0;
+                    foreach($multiple_ziswaf as $index => $mz) {
                         $condition 	= [];
                         $condition[]= ['id_jenis_izin', $mz['id_jenis_izin'], 'where'];
                         $jenis_izin = $this->M_admin->get_master_spec('m_jenis_izin', 'jenis_izin', $condition)->row_array()['jenis_izin'];
                         echo "- ".$jenis_izin.' ( Rp '.number_format($mz['sub_total'],0,".",".").' )';
+                        if(++$i === $numItems) {
+                        }else{
+                            echo "<br>";
+                        }
+
                     }
                 ?>
             </td>
