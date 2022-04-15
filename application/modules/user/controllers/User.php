@@ -102,30 +102,48 @@ class User extends MY_Controller {
 		$condition[] = ['id_user', $id_user, 'where'];
 
 		if(isset($_FILES['foto'])){
-			$filename  = $_FILES['foto']['tmp_name'];
-			$handle    = fopen($filename, "r");
-			$data_file = fread($handle, filesize($filename));
-			$POST_DATA = array(
-				'file' => base64_encode($data_file),
-				'file_hash' => uniqid().time(),
-				'file_name' => $_FILES["foto"]['name'],
-				'extension' => pathinfo($_FILES["foto"]['name'], PATHINFO_EXTENSION)
-			);
+			// $filename  = $_FILES['foto']['tmp_name'];
+			// $handle    = fopen($filename, "r");
+			// $data_file = fread($handle, filesize($filename));
+			// $POST_DATA = array(
+			// 	'file' => base64_encode($data_file),
+			// 	'file_hash' => uniqid().time(),
+			// 	'file_name' => $_FILES["foto"]['name'],
+			// 	'extension' => pathinfo($_FILES["foto"]['name'], PATHINFO_EXTENSION)
+			// );
 
-			$curl = curl_init();
-			/* ganti http://example.com dengan external server Anda. */
-			curl_setopt($curl, CURLOPT_URL, 'http://contohweb.xyz/file-upload/index.php');
-			curl_setopt($curl, CURLOPT_TIMEOUT, 30);
-			curl_setopt($curl, CURLOPT_POST, 1);
-			curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($curl, CURLOPT_POSTFIELDS, $POST_DATA);
-			$response = curl_exec($curl);
-			curl_close ($curl);
+			// $curl = curl_init();
+			// /* ganti http://example.com dengan external server Anda. */
+			// curl_setopt($curl, CURLOPT_URL, 'http://contohweb.xyz/file-upload/index.php');
+			// curl_setopt($curl, CURLOPT_TIMEOUT, 30);
+			// curl_setopt($curl, CURLOPT_POST, 1);
+			// curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+			// curl_setopt($curl, CURLOPT_POSTFIELDS, $POST_DATA);
+			// $response = curl_exec($curl);
+			// curl_close ($curl);
 
-			$result = json_decode($response, true);
+			// $result = json_decode($response, true);
 
-			if($result['last_id'] != 0) {
-				$dS['img']		= $result['file_locate'].$result['file_hash'];
+			// if($result['last_id'] != 0) {
+			// 	$dS['img']		= $result['file_locate'].$result['file_hash'];
+			// 	$ins_dS = $this->M_core->update_tbl("m_user", $dS, $condition);
+			// }
+
+			$nama_input = $_FILES['foto']['tmp_name'];
+
+			$path 	= '/berkas/berkas_foto';
+			$config = [
+				'upload_path' 	=> '.'.$path,
+				'allowed_types' => 'png|jpg|jpeg',
+				// 'max_size' 		=> '6000',
+				'max_size' 		=> '8000',
+				'file_name' 	=> $_FILES['foto']['name'],
+				'encrypt_name' 	=> TRUE
+			];
+			$this->upload->initialize($config);
+
+			if($this->upload->do_upload("foto")) {
+				$dS['img']		= base_url().substr($path, 1).$this->upload->data('file_name');
 				$ins_dS = $this->M_core->update_tbl("m_user", $dS, $condition);
 			}
 

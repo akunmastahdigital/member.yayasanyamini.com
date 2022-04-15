@@ -18,6 +18,7 @@ class Permohonan_izin extends MY_Controller {
 		$condition 		= array();
 		$condition[] 	= array('id_nama_izin', 1, 'where');
 		$condition[] 	= array('aktif', 1, 'where');
+		$condition[] 	= array('show', 1, 'where');
 		$d['option'] 	= $this->M_permohonan_izin->get_master_spec('m_jenis_izin', 'id_jenis_izin, teks_menu', $condition)->result_array();
 		
 		$this->load->view('layout', $d);
@@ -51,13 +52,19 @@ class Permohonan_izin extends MY_Controller {
             $no++;
             $row = array();
 
+			if(in_array($ld->id_jenis_izin, [1, 2, 3])){
+				$btn_sertif = ' <button style="margin-right:5px;" type="button" data-id="'.$ld->id_permohonan.'" class="btn btn-xs btn-icon waves-effect btn-primary m-b-5 tooltip-hover tooltipstered" onclick="showDraftSertif(this)" title="Preview Sertifikat"><i class="fa fa-file-text-o"></i> Sertif
+				</button>';
+			}else{
+				$btn_sertif = '';
+			}
+
 			if($ld->id_aktivitas != 14){
 				$label = 'Menunggu '.$ld->nm_aktivitas_workflow;
 				$btn = '';
 			}else{
 				$label = '<label class="label label-sm label-teal">'.$ld->nm_aktivitas_workflow.'</label>';
-				$btn = '<button style="margin-right:5px;" type="button" data-id="'.$ld->id_permohonan.'" class="btn btn-xs btn-icon waves-effect btn-danger m-b-5 tooltip-hover tooltipstered" onclick="showDraft(this)" title="Preview Kwitansi"> <i class="fa fa-file-pdf-o"></i> Kwitansi </button> <button style="margin-right:5px;" type="button" data-id="'.$ld->id_permohonan.'" class="btn btn-xs btn-icon waves-effect btn-primary m-b-5 tooltip-hover tooltipstered" onclick="showDraftSertif(this)" title="Preview Sertifikat"><i class="fa fa-file-text-o"></i> Sertif
-				</button>';
+				$btn = '<button style="margin-right:5px;" type="button" data-id="'.$ld->id_permohonan.'" class="btn btn-xs btn-icon waves-effect btn-danger m-b-5 tooltip-hover tooltipstered" onclick="showDraft(this)" title="Preview Kwitansi"> <i class="fa fa-file-pdf-o"></i> Kwitansi </button>'.$btn_sertif;
 			}
 
             // $row[] = $no;
@@ -82,7 +89,7 @@ class Permohonan_izin extends MY_Controller {
 	}
 
 	function submit_manual(){
-
+		
 		$nama_relawan = $this->input->post('nm_user');
 		$id_user = $this->input->post('id_user');
 		$id_jenis_izin = $this->input->post('jenis_ziswaf');
@@ -130,34 +137,24 @@ class Permohonan_izin extends MY_Controller {
 		$dS['id_syarat_izin_s']		= $id_upload;
 		$dS['index']				= 1;
 
-		$filename  = $_FILES['file_upload']['tmp_name'];
-		$handle    = fopen($filename, "r");
-		$data_file = fread($handle, filesize($filename));
-		$POST_DATA = array(
-			'file' => base64_encode($data_file),
-			'file_hash' => uniqid().time(),
-			'file_name' => $_FILES["file_upload"]['name'],
-			'extension' => pathinfo($_FILES["file_upload"]['name'], PATHINFO_EXTENSION)
-		);
+		$nama_input = $_FILES['file_upload']['tmp_name'];
 
-		$curl = curl_init();
-		/* ganti http://example.com dengan external server Anda. */
-		curl_setopt($curl, CURLOPT_URL, 'http://contohweb.xyz/file-upload/index.php');
-		curl_setopt($curl, CURLOPT_TIMEOUT, 200);
-		curl_setopt($curl, CURLOPT_POST, 1);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($curl, CURLOPT_POSTFIELDS, $POST_DATA);
-		$response = curl_exec($curl);
-		curl_close ($curl);
+		$path 	= '/berkas/berkas_permohonan';
+		$config = [
+			'upload_path' 	=> '.'.$path,
+			'allowed_types' => 'pdf|png|jpg|jpeg',
+			// 'max_size' 		=> '6000',
+			'max_size' 		=> '8000',
+			'file_name' 	=> $_FILES['file_upload']['name'],
+			'encrypt_name' 	=> TRUE
+		];
+		$this->upload->initialize($config);
 
-		$result = json_decode($response, true);
-
-		if($result['last_id'] != 0) {
-			$dS['file_lokasi']		= $result['file_locate'];
-			$dS['file_name_asli']	= $result['file_name'];
-			$dS['file_name_hash']	= $result['file_hash'];
+		if($this->upload->do_upload("file_upload")) {
+			$dS['file_lokasi']		= base_url().substr($path, 1);
+			$dS['file_name_asli']	= $this->upload->data('orig_name');
+			$dS['file_name_hash']	= $this->upload->data('file_name');
 			$ins_dS = $this->M_core->insert_tbl_normal("t_syarat_izin_f", $dS);
-				
 		}
 
 		$condition 		= array();
@@ -181,7 +178,7 @@ class Permohonan_izin extends MY_Controller {
 		$id_tgl_transaksi 	= $this->M_permohonan_izin->get_master_spec('m_syarat_izin_s', 'id_syarat_izin_s', $condition)->row_array()['id_syarat_izin_s'];
 
 		$dSUi['id_permohonan']		     = $id_permohonan;
-		$dSUi['id_syarat_izin_s']         	 = $id_tgl_transaksi;
+		$dSUi['id_syarat_izin_s']        = $id_tgl_transaksi;
 		$dSUi['nilai_string']			 = $tgl_transaksi;
 		$dSUi['index']	    	         = 1;
 
@@ -194,7 +191,7 @@ class Permohonan_izin extends MY_Controller {
 		$id_keterangan 	= $this->M_permohonan_izin->get_master_spec('m_syarat_izin_s', 'id_syarat_izin_s', $condition)->row_array()['id_syarat_izin_s'];
 
 		$dSUi['id_permohonan']		     = $id_permohonan;
-		$dSUi['id_syarat_izin_s']         	 = $id_keterangan;
+		$dSUi['id_syarat_izin_s']        = $id_keterangan;
 		$dSUi['nilai_string']			 = $keterangan;
 		$dSUi['index']	    	         = 1;
 
@@ -208,11 +205,26 @@ class Permohonan_izin extends MY_Controller {
 			$id_jns_infaq 	= $this->M_permohonan_izin->get_master_spec('m_syarat_izin_s', 'id_syarat_izin_s', $condition)->row_array()['id_syarat_izin_s'];
 
 			$dSUi['id_permohonan']		     = $id_permohonan;
-			$dSUi['id_syarat_izin_s']         	 = $id_jns_infaq;
+			$dSUi['id_syarat_izin_s']        = $id_jns_infaq;
 			$dSUi['nilai_string']			 = $jenis_infaq;
 			$dSUi['index']	    	         = 1;
 
 			$ins_dS = $this->M_core->insert_tbl_normal('t_syarat_izin_s', $dSUi);
+		}
+
+		if($this->input->post('jenis_multi_ziswaf')){
+			$count = count($this->input->post('jenis_multi_ziswaf'));
+			
+			for ($i=0; $i < $count; $i++) { 
+				$mtz['id_permohonan']		= $id_permohonan;
+				$mtz['id_jenis_izin']		= $this->input->post('jenis_multi_ziswaf')[$i];
+				$mtz['jenis_infaq']		= $this->input->post('jenis_infaq_multi')[$i];
+				$mtz['sub_total']		= str_replace(".", "", $this->input->post('jmlh_transaksi_multi')[$i]);
+				$mtz['index']	= $i + 1;
+				$mtz['added_by']	= $id_user;
+				$mtz['aktif']	= 1;
+				$this->M_core->insert_tbl_normal("t_multiple_ziswaf", $mtz);		
+			}
 		}
 
 		$condition 		= array();
@@ -1290,7 +1302,18 @@ class Permohonan_izin extends MY_Controller {
 		$condition[]  = ['id_jenis_izin', $id_jenis_izin, 'where'];
 		$condition[]  = ['kd_syarat_izin_grup', 'asc', 'order_by'];
 		$dSi['id_permohonan'] = $id_permohonan;
+		$dSi['id_jenis_izin'] = $id_jenis_izin;
 		$dSi['m_grup'] 	      = $this->M_core->get_tbl('m_syarat_izin_grup', '*', $condition)->result_array();
+
+		$condition 	  = [];
+		$condition[]  = ['id_permohonan', $id_permohonan, 'where'];
+		$dSi['data_multi_ziswaf']= $this->M_core->get_tbl('t_multiple_ziswaf', '*', $condition)->result_array();
+
+		$condition 		= array();
+		$condition[] 	= array('id_nama_izin', 1, 'where');
+		$condition[] 	= array('aktif', 1, 'where');
+		$condition[] 	= array('show', 1, 'where');
+		$dSi['option'] 	= $this->M_permohonan_izin->get_master_spec('m_jenis_izin', 'id_jenis_izin, teks_menu', $condition)->result_array();
 
 		if($cSi == 0) {
 			// $dSi['si_card'] = '';

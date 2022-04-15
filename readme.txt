@@ -7,9 +7,6 @@ Assalamualaikum :)
 - Pin
 - Goz
 
-
-sopilein.com
-
 Thanks ~
 
 Wassalamualaikum :)

@@ -55,7 +55,7 @@ class Dashboard extends MY_Controller {
 
 		$result = '';
 		$no = 0;
-		$a = array('danger', 'success', 'primary', 'warning', 'info', 'orange', 'danger','success', 'primary', 'warning', 'info', 'orange', 'danger');
+		$a = array('danger', 'success', 'primary', 'warning', 'info', 'orange', 'danger','success', 'primary', 'warning', 'info', 'orange', 'danger', 'success', 'primary');
 		foreach ($data as $d) {
 			$result .=
 			'<div class="col-sm-4">
@@ -77,7 +77,7 @@ class Dashboard extends MY_Controller {
 
 		$result = '';
 		$no = 0;
-		$a = array('danger', 'success', 'primary', 'warning', 'info', 'orange', 'danger','success', 'primary', 'warning', 'info', 'orange', 'danger');
+		$a = array('danger', 'success', 'primary', 'warning', 'info', 'orange', 'danger','success', 'primary', 'warning', 'info', 'orange', 'danger', 'success', 'primary');
 		foreach ($data as $d) {
 			$result .=
 			'<div class="col-sm-4">

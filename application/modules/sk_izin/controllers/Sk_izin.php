@@ -557,9 +557,14 @@ class Sk_izin extends MY_Controller {
 			$condition[]= ['id_syarat_izin_s', $id_sizs, 'where'];
 			$jumlah		= $this->M_admin->get_master_spec('t_syarat_izin_s', 'nilai_num', $condition)->row_array()['nilai_num'];
 
+			$condition 	= [];
+			$condition[]= ['id_permohonan', $id_permohonan, 'where'];
+			$multiple_ziswaf= $this->M_admin->get_master_spec('t_multiple_ziswaf', '*', $condition)->result_array();
+
 			$data_pdf['jumlah'] = "Rp " . number_format($jumlah, 0,',','.');
 			$data_pdf['terbilang'] = ucwords($this->terbilang($jumlah). ' Rupiah');
 			$data_pdf['id_permohonan'] 	= $id_permohonan;
+			$data_pdf['multiple_ziswaf'] 	= $multiple_ziswaf;
 			$data_pdf['tgl_permohonan'] 	= $this->indonesian_date($dPer['tgl_permohonan']);
 			$data_pdf['bentuk_usaha'] 	= $this->get_bentuk_usaha($dPer['id_perusahaan']);
 			$data_pdf['status_perusahaan'] 	= $this->get_status_perusahaan($dPer['id_perusahaan']);

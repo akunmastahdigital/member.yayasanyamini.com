@@ -1,6 +1,38 @@
 <!-- Jquery filer css -->
-
-
+<style>
+    input[switch] + label{
+        width:65px
+    }
+    input[switch]:checked + label:after{
+        left: 42px;
+    }
+    .select2-container--default .select2-selection--multiple .select2-selection__choice__display{
+        padding-left: 10px;
+        color: #fff;
+    }
+    .select2-container--default .select2-selection--multiple .select2-selection__choice__remove{
+        border-right:none;
+        color: #fff;
+    }
+    .select2-container .select2-selection--multiple .select2-selection__choice{
+        background-color: #1abc9c;
+        border: 1px solid #1abc9c;
+        border-radius: 3px;
+    }
+    table.table-bordered thead th, table.table-bordered thead td, table.table-bordered tbody th, table.table-bordered tbody td {
+        vertical-align: middle;
+    }
+    table thead{
+        background-color: #1abc9c;
+        color : #fff;
+    }
+    table .select2-container--default .select2-selection--single{
+        background:none;
+    }
+    input.trigger-uang-multi:read-only{
+        background:#eee;
+    }
+</style>
 
 <div class="wrapper">
   <div class="container">
@@ -86,31 +118,6 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-md-2 control-label" for="example-email">Jenis Ziswaf</label>
-                    <div class="col-md-10">
-                        <select id="ziswaf" name="jenis_ziswaf" class="selectpicker form-control" required>
-                            <option value="">-- Pilih --</option>
-                            <?php foreach ($option as $opt) {
-                                echo "<option value='".$opt['id_jenis_izin']."'>".$opt['teks_menu']."";
-                            } ?>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group hidden" id="infaq_form">
-                    <label class="col-md-2 control-label" for="example-email">Jenis infaq</label>
-                    <div class="col-md-10">
-                        <select id="infaq" name="jenis_infaq" class="selectpicker form-control">
-                            <option value="">-- Pilih --</option>
-                            <option value="Sedekah Quran">Sedekah Quran</option>
-                            <option value="Bingkisan untuk guru ngaji">Bingkisan untuk guru ngaji</option>
-                            <option value="Beasiswa Pendidikan Quran Yatim Piatu">Beasiswa Pendidikan Quran Yatim Piatu</option>
-                            <option value="Training guru Quran">Training guru Quran</option>
-                            <option value="BBQ">BBQ</option>
-                            <option value="Pengembangan Dakwah Qur'an">Pengembangan Dakwah Qur'an</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
                     <label class="col-md-2 control-label">Nama Muzakki</label>
                     <div class="col-md-10">
                         <input type="text" class="form-control" value="" placeholder="Fulan" name="nama_muzakki" required>
@@ -134,11 +141,84 @@
                         <input type="email" class="form-control" value="" placeholder="Fulan@mail.com" name="email_muzakki">
                     </div>
                 </div>
-
+                <div class="form-group ">
+                    <label class="col-md-2 control-label" for="example-email">Jenis Ziswaf</label>
+                    <div class="col-md-10">
+                        <select id="ziswaf" name="jenis_ziswaf" class="select2 form-control" required>
+                            <option value="">-- Pilih --</option>
+                            <?php foreach ($option as $opt) {
+                                echo "<option value='".$opt['id_jenis_izin']."'>".$opt['teks_menu']."";
+                            } ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group trigger-multi hidden">
+                    <label class="col-md-2 control-label" for="example-email">Multi Ziswaf</label>
+                    <div class="col-md-10">
+                        <select id="multi_ziswaf" name="multi_ziswaf[]" class="select2 form-control multi_ziswaf" multiple>
+                            <?php foreach ($option as $opt) {
+                                if($opt['id_jenis_izin'] != "15"){
+                                    echo "<option value='".$opt['id_jenis_izin']."'>".$opt['teks_menu']."";
+                                }
+                            } ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group trigger-multi hidden">
+                    <label class="col-md-2 control-label" for="example-email"></label>
+                    <div class="col-md-10">
+                    <table class="table table-striped table-bordered multi-ziswaf-table">
+                          <thead style>
+                          <tr>
+                              <th class="col-md-1 text-center">NO</th>
+                              <th class="col-md-2 text-center">Jenis Ziswaf</th>
+                              <th class="col-md-2 text-center">Jenis Infaq <br>(Tampil Jika Memilih Infaq)</th>
+                              <th class="col-md-2 text-center">Jumlah Uang</th>
+                              <!-- <th class="col-md-1 text-center">Aksi</th> -->
+                          </tr>
+                          </thead>
+                          <tbody >
+                              <tr class="hidden">
+                                  <td class="no text-center"></td>
+                                  <td class="jenis-ziswaf text-center"><span></span><input class="hidden" data-name="jenis_multi_ziswaf[]" type="hidden" /></td>
+                                  <td class="jenis-infaq">
+                                    <select id="infaq" data-name="jenis_infaq_multi[]" class="form-control hidden">
+                                        <option value="">-- Pilih --</option>
+                                        <option value="Sedekah Quran">Sedekah Quran</option>
+                                        <option value="Bingkisan untuk guru ngaji">Bingkisan untuk guru ngaji</option>
+                                        <option value="Beasiswa Pendidikan Quran Yatim Piatu">Beasiswa Pendidikan Quran Yatim Piatu</option>
+                                        <option value="Training guru Quran">Training guru Quran</option>
+                                        <option value="BBQ">BBQ</option>
+                                        <option value="Pengembangan Dakwah Qur'an">Pengembangan Dakwah Qur'an</option>
+                                    </select>
+                                  </td>
+                                  <td class="jumlah_uang">
+                                      <input type="text" class="form-control uang trig_total_uang" placeholder="Rp 100.000" data-name="jmlh_transaksi_multi[]">
+                                  </td>
+                                  <!-- <td></td> -->
+                              </tr>
+                          </tbody>
+                      </table>
+                    </div>
+                </div>
+                <div class="form-group hidden" id="infaq_form">
+                    <label class="col-md-2 control-label" for="example-email">Jenis infaq</label>
+                    <div class="col-md-10">
+                        <select id="infaq" name="jenis_infaq" class="selectpicker form-control">
+                            <option value="">-- Pilih --</option>
+                            <option value="Sedekah Quran">Sedekah Quran</option>
+                            <option value="Bingkisan untuk guru ngaji">Bingkisan untuk guru ngaji</option>
+                            <option value="Beasiswa Pendidikan Quran Yatim Piatu">Beasiswa Pendidikan Quran Yatim Piatu</option>
+                            <option value="Training guru Quran">Training guru Quran</option>
+                            <option value="BBQ">BBQ</option>
+                            <option value="Pengembangan Dakwah Qur'an">Pengembangan Dakwah Qur'an</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label class="col-md-2 control-label">Jumlah Transaksi</label>
                     <div class="col-md-10">
-                        <input type="text" class="form-control uang" placeholder="Rp 100.000" name="jmlh_transaksi" required>
+                        <input type="text" class="form-control uang trigger-uang-multi" placeholder="Rp 100.000" name="jmlh_transaksi" required>
                     </div>
                 </div>
                 <div class="form-group">
@@ -161,10 +241,8 @@
                 </div>
 
                 <div class="form-group text-center">
-                    <button class="btn btn-info btn-md"><i class="fa fa-send"></i> Lapor</button>
+                    <button class="btn btn-info btn-lg"><i class="fa fa-send"></i> Lapor</button>
                 </div>
-
-
 
             </form>
 
@@ -208,14 +286,69 @@
 
 $('#ziswaf').change(function() {
     opt = $(this).val();
-    console.log(opt);
     if (opt=="5") {
-        console.log("show");
         $("#infaq_form").removeClass('hidden')
     }else{
-        console.log("hide");
         $("#infaq_form").addClass('hidden')
     }
+
+    if(opt == "15"){
+        $("#multi_ziswaf").val(null).trigger('change');
+        $(".trigger-uang-multi").attr("readonly", true);
+        $("#multi_ziswaf").attr("required", true);
+        $(".trigger-multi").removeClass("hidden")
+    }else{
+        $(".trigger-uang-multi").attr("readonly", false);
+        $("#multi_ziswaf").val(null).trigger('change');
+        $("#multi_ziswaf").attr("required", false);
+        $(".trigger-multi").addClass("hidden")
+    }
+});
+  
+  $('.multi_ziswaf').on('select2:select', function(e) {
+    var data = e.params.data;
+    console.log(data);
+    let content   = $(document).find('.multi-ziswaf-table').find('tbody tr.hidden').clone();
+    content.removeClass('hidden').addClass(data._resultId);
+    let nameMulti = $('.jenis-ziswaf input', content).attr('data-name');
+    $('.jenis-ziswaf span', content).html(data.text);
+    $('.jenis-ziswaf input', content).attr('name', nameMulti).val(data.id);
+    let nameInfaq = $('.jenis-infaq select', content).attr('data-name');
+    $('.jenis-infaq select', content).attr('name', nameInfaq)
+    if (data.id == 5) {
+        $('.jenis-infaq select', content).removeClass('hidden').attr('required', true);
+    }
+    let jmlhUang = $('.jumlah_uang input', content).attr('data-name');
+    $('.jumlah_uang input', content).mask('000.000.000.000.000', {reverse: true}).attr('required', true).attr('name', jmlhUang);
+    $(document).find('.multi-ziswaf-table').find('tbody').append(content);
+
+    let i = 1;
+    $(document).find('.multi-ziswaf-table').find('tbody tr:visible').each(function(){
+        $(this).find('td.no').html(i);
+        i++;
+    });
+  });
+
+  $('.multi_ziswaf').on('select2:unselect', function(e) {
+    var data = e.params.data;
+    $(document).find('.multi-ziswaf-table').find('tbody').find('tr.'+data._resultId).remove()
+    let i = 1;
+    $(document).find('.multi-ziswaf-table').find('tbody tr:visible').each(function(){
+        $(this).find('td.no').html(i);
+        i++;
+    });
+  });
+
+  let timer = null;
+  $(document).on("change paste keyup cut select", ".trig_total_uang" , function() {
+    let jmlh = 0
+    $(document).find('.multi-ziswaf-table').find('tbody tr:visible').each(function(){
+        value = $(this).find('.jumlah_uang input').val()
+        calc = parseInt(value.replaceAll('.', ''))
+        jmlh += calc
+    });
+    
+    $( '.trigger-uang-multi' ).mask('000.000.000.000.000', {reverse: true}).val(jmlh).trigger('input'); 
 });
 
   // Datatables

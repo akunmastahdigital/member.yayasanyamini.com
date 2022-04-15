@@ -59,6 +59,8 @@
 
 <script src="<?php echo base_url()?>berkas/plugins/bootstrap-select/js/bootstrap-select.min.js" type="text/javascript"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>  
+
 
 
 <!-- App js -->
@@ -83,9 +85,10 @@
 
         //Input mask
 
-        $( '.uang' ).mask('000.000.000', {reverse: true});
+        $( '.uang' ).mask('000.000.000.000.000', {reverse: true});
 
         $('.phone').mask('0000 0000 0000');
+        $('.select2').select2();
 
 
         //Core Select

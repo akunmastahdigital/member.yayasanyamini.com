@@ -23,6 +23,8 @@
         <!-- <link href="<?php //echo base_url()?>berkas/plugins/jquery.filer/css/themes/jquery.filer-dragdropbox-theme.css" rel="stylesheet" /> -->
 
         <!-- App css -->
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
         <link href="<?php echo base_url()?>berkas/core/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="<?php echo base_url()?>berkas/core/css/core.css" rel="stylesheet" type="text/css" />
         <link href="<?php echo base_url()?>berkas/core/css/components.css" rel="stylesheet" type="text/css" />
@@ -53,6 +55,8 @@
 
         <!-- Nestable css -->
         <link href="<?php echo base_url()?>berkas/plugins/nestable/jquery.nestable.css" rel="stylesheet" /> 
+        
+
 
         <!-- Tags Input -->
         <link href="<?php echo base_url()?>berkas/plugins/bootstrap-tagsinput/css/bootstrap-tagsinput.css" rel="stylesheet" />

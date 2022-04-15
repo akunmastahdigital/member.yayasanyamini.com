@@ -1,8 +1,21 @@
 <!-- START LOOP M_GRUP -->
 <!-- <form class="form-horizontal form-si" role="form"> -->
+<style>
+  table.table-bordered thead th, table.table-bordered thead td, table.table-bordered tbody th, table.table-bordered tbody td {
+        vertical-align: middle;
+    }
+    thead{
+      background: #3ac9d6;
+      color: #fff;
+    }
+    .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+      background:none;
+    }
+</style>
 
 <?php 
 $nogrup = 1;
+$table_multi = 0;
 foreach($m_grup as $mgp) { 
 ?>
 <div class="row form-si">
@@ -108,7 +121,7 @@ foreach($m_grup as $mgp) {
                                 data-id="<?php echo $tsi[$msi['pk_tujuan_s']]?>" data-index="<?php echo $tsi['index']?>">
                                 <u><?php echo $tsi['file_name_asli']?></u>
                              </a>&nbsp;
-                             <a class="btn btn-sm btn-danger" target="_blank" href="<?php echo $tsi['file_lokasi'].$tsi['file_name_hash']?>" download="<?php echo $tsi['file_name_asli']?>"><i class="fa fa-download"></i> &nbsp;Download File</a>
+                             <a class="btn btn-sm btn-danger" target="_blank" href="<?php echo $tsi['file_lokasi'].'/'.$tsi['file_name_hash']?>" download="<?php echo $tsi['file_name_asli']?>"><i class="fa fa-download"></i> &nbsp;Download File</a>
                     </div>
                     <!-- <div class="div-cttn-file">
                       <input class="form-control cttn-file cttn-val"
@@ -406,7 +419,7 @@ foreach($m_grup as $mgp) {
           }
           ?>
 
-<?php
+          <?php
           if($msi['jenis_input'] == 'textarea') {
             // NON MULTIVALUE
             if($msi['multivalue'] == 0) { 
@@ -881,6 +894,7 @@ foreach($m_grup as $mgp) {
         <?php
         }
         ?>
+
       </div>
     </div>
   </div>
@@ -890,6 +904,79 @@ foreach($m_grup as $mgp) {
 <?php 
 } 
 ?>
+
+<?php if (count($data_multi_ziswaf) > 0){ ?>
+  <div class="row form-si">
+    <div class="div-grup">
+      <div class="card-box table-responsive">
+          <h4 class="m-t-0 header-title">Multi Ziswaf</h4>
+          <p class="text-muted font-13 m-b-30"></p>
+
+          <div class="row m-b-10">
+            <div class="col-md-12">
+              <div class="row" style="margin-bottom:15px;">
+                <div class="div-input-tbl" style="overflow-x: auto;">
+                  <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                      <tr>
+                          <th class="text-center">NO</th>
+                          <th class="text-center">Jenis Ziswaf</th>
+                          <th class="text-center">Jenis Infaq <br>(Tampil Jika Memilih Infaq)</th>
+                          <th class="text-center">Jumlah Uang</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php $total = 0; for ($i=0; $i < count($data_multi_ziswaf) ; $i++) { ?>
+                        <tr>
+                          <td class="no text-center"><?php echo $i + 1 ?></td>
+                          <td class="jenis-ziswaf">
+                            <select id="ziswaf" name="jenis_ziswaf[]" class="form-control" required disabled>
+                              <?php 
+                                foreach ($option as $opt) {
+                                  if($opt['id_jenis_izin'] == $data_multi_ziswaf[$i]['id_jenis_izin']){
+                                    $selected = "selected";
+                                  }else{
+                                    $selected = "";
+                                  }
+                                    echo "<option value='".$opt['id_jenis_izin']."'".$selected.">".$opt['teks_menu']."</option>";
+                                } 
+                              ?>
+                            </select>
+                          </td>
+                          <td class="jenis-infaq">
+                            <select id="infaq" name="jenis_infaq_multi[]" class="form-control" disabled>
+                                <option value=""></option>
+                                <option <?php ("Sedekah Quran" == $data_multi_ziswaf[$i]['jenis_infaq'] ) ? "selected" : "" ?> value="Sedekah Quran">Sedekah Quran</option>
+                                <option <?php ("Bingkisan untuk guru ngaji" == $data_multi_ziswaf[$i]['jenis_infaq'] ) ? "selected" : "" ?> value="Bingkisan untuk guru ngaji">Bingkisan untuk guru ngaji</option>
+                                <option <?php ("Sedekah Quran" == $data_multi_ziswaf[$i]['jenis_infaq'] ) ? "selected" : "" ?> value="Beasiswa Pendidikan Quran Yatim Piatu">Beasiswa Pendidikan Quran Yatim Piatu</option>
+                                <option <?php ("Beasiswa Pendidikan Quran Yatim Piatu" == $data_multi_ziswaf[$i]['jenis_infaq'] ) ? "selected" : "" ?> value="Training guru Quran">Training guru Quran</option>
+                                <option <?php ("BBQ" == $data_multi_ziswaf[$i]['jenis_infaq'] ) ? "selected" : "" ?> value="BBQ">BBQ</option>
+                                <option <?php ("Pengembangan Dakwah Qur'an" == $data_multi_ziswaf[$i]['jenis_infaq'] ) ? "selected" : "" ?> value="Pengembangan Dakwah Qur'an">Pengembangan Dakwah Qur'an</option>
+                            </select>
+                          </td>
+                          <td class="jumlah_uang">
+                              <input type="text" class="form-control text-right" disabled placeholder="Rp 100.000" data-name="jmlh_transaksi_multi[]" value="Rp <?php echo number_format($data_multi_ziswaf[$i]['sub_total'],0,".",".") ?>">
+                          </td>
+                        </tr>
+                      <?php $total += $data_multi_ziswaf[$i]['sub_total']; } ?>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <td colspan="3" class="text-right"><strong><h4>Total</h4></strong></td>
+                        <td colspan="1" style="font-weight: bold">
+                          <input class="form-control text-right" readonly value="Rp <?php echo number_format($total,0,".",".")?>">
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+<?php } ?>
 <!-- </form> -->
 <script type="text/javascript">
   $(document).ready(function() {
