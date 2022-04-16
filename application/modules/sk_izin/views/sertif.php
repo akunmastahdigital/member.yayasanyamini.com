@@ -18,9 +18,9 @@
     <tr>
         <td style="width:100%;text-align:center;font-size:40px;letter-spacing:1px"><b>SERTIFIKAT</b></td>
     </tr>
-    <tr>
+    <!-- <tr>
         <td style="width:100%; text-align:center"><?php echo $jenis_izin ?></td>
-    </tr>
+    </tr> -->
     <tr>
         <td style="line">&nbsp;</td>
     </tr>
@@ -49,7 +49,7 @@
         <!-- <td style="width:20%;"></td> -->
         <td style="width:100%;text-align:right;font-size:14px;">Ketua Yayasan Amanah Insan Mulia Indonesia <br>
         Jakarta, <?php echo $tgl_terbit ?><br>
-        <img width="130" src="<?php echo base_url() ?>berkas/ttd-cholid.png"><br><span style="font-size:14px;">Andi Setiawan, M.M</span></td>
+        <img width="130" src="<?php echo base_url() ?>berkas/ttd-cholid.png"><br><span style="font-size:14px;">Ust. Moh. Cholid Riza, S.Si., M.M.</span></td>
     </tr>
 </table>
 
