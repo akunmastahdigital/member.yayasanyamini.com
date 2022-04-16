@@ -20,8 +20,8 @@ berkas/berkas_permohonan/*
 berkas/berkas_foto/*
 system/sessions/*
 
-config/database.php
-config/config.php
+application/config/database.php
+application/config/config.php
 .htaccess
 
 # IDE Files
