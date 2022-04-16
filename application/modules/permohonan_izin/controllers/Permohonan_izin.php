@@ -56,8 +56,19 @@ class Permohonan_izin extends MY_Controller {
 				$btn_sertif = ' <button style="margin-right:5px;" type="button" data-id="'.$ld->id_permohonan.'" class="btn btn-xs btn-icon waves-effect btn-primary m-b-5 tooltip-hover tooltipstered" onclick="showDraftSertif(this)" title="Preview Sertifikat"><i class="fa fa-file-text-o"></i> Sertif
 				</button>';
 			}else{
-				$btn_sertif = '';
+				$condition 		= array();
+				$condition[] 	= array('id_permohonan', $ld->id_permohonan, 'where');
+				$condition[] 	= array('id_jenis_izin', [1,2,3], 'where_in');
+				$cek_multi_ziswaf_zakat 	= $this->M_permohonan_izin->get_master_spec('t_multiple_ziswaf', '*', $condition)->result_array();
+				if(count($cek_multi_ziswaf_zakat) > 0){
+					$btn_sertif = ' <button style="margin-right:5px;" type="button" data-id="'.$ld->id_permohonan.'" class="btn btn-xs btn-icon waves-effect btn-primary m-b-5 tooltip-hover tooltipstered" onclick="showDraftSertif(this)" title="Preview Sertifikat"><i class="fa fa-file-text-o"></i> Sertif
+					</button>';
+				}else{
+					$btn_sertif = '';
+				}
+				// $btn_sertif = '';
 			}
+
 
 			if($ld->id_aktivitas != 14){
 				$label = 'Menunggu '.$ld->nm_aktivitas_workflow;

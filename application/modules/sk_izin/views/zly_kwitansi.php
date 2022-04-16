@@ -37,7 +37,7 @@
             <td style="width:4%"></td>
             <td style="width:25%"><b>Donasi </b></td>
             <td style="width:3%">:</td>
-            <td style="width:65%"><?php 
+            <td style="width:65%;font-size:10px;"><?php 
             $numItems = count($multiple_ziswaf);
             $i = 0;
                     foreach($multiple_ziswaf as $index => $mz) {
